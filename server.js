@@ -100,14 +100,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/ships", (req, res) => {
-  const list = [];
-  for (const v of vessels.values()) {
-    if (typeof v.lat === "number" && typeof v.lon === "number") {
-      list.push(v);
-    }
-  }
+  const list = Array.from(vessels.values()).filter(
+    (v) => (v.lat ?? v.latitude ?? v.Latitude) != null &&
+           (v.lon ?? v.lng ?? v.longitude ?? v.Longitude) != null
+  );
   res.json(list);
 });
+
 
 app.listen(PORT, () => {
   console.log(`Global AIS Relay running on port ${PORT}`);
